@@ -1,4 +1,10 @@
 # google_trans_new
+
+### Version 1.1.10
+
+fix v1.1.9: json.decoder.JSONDecodeError: Extra data: line 1 column 300 (char 299)
+https://pypi.org/project/google-trans-new-flickermi/1.1.10/
+
 ### Version 1.1.9
 
 A free and unlimited python API for google translate.  
@@ -23,28 +29,32 @@ pip install google_trans_new
 Basic Usage
 =====
 ### Translate
+
 ```python
-from google_trans_new import google_translator  
-  
-translator = google_translator()  
-translate_text = translator.translate('สวัสดีจีน',lang_tgt='en')  
+from google_trans_new.google_trans_new import google_translator
+
+translator = google_translator()
+translate_text = translator.translate('สวัสดีจีน', lang_tgt='en')
 print(translate_text)
--> Hello china
+-> Hello
+china
 ```
 ***
 
 Advanced Usage
 =====
-### Translate 
+### Translate
+
 ```python  
-from google_trans_new import google_translator  
+from google_trans_new.google_trans_new import google_translator
 
 # You can set the url_suffix according to your country. You can set url_suffix="hk" if you are in hong kong,url_suffix use in https://translate.google.{url_suffix}/ 
 # If you want use proxy, you can set proxies like proxies={'http':'xxx.xxx.xxx.xxx:xxxx','https':'xxx.xxx.xxx.xxx:xxxx'}
-translator = google_translator(url_suffix="hk",timeout=5,proxies={'http':'xxx.xxx.xxx.xxx:xxxx','https':'xxx.xxx.xxx.xxx:xxxx'})  
+translator = google_translator(url_suffix="hk", timeout=5,
+                               proxies={'http': 'xxx.xxx.xxx.xxx:xxxx', 'https': 'xxx.xxx.xxx.xxx:xxxx'})
 # <Translator url_suffix=cn timeout=5 proxies={'http':'xxx.xxx.xxx.xxx:xxxx','https':'xxx.xxx.xxx.xxx:xxxx'}>  
 #  default parameter : url_suffix="cn" timeout=5 proxies={}
-translate_text = translator.translate('สวัสดีจีน',lang_tgt='zh')  
+translate_text = translator.translate('สวัสดีจีน', lang_tgt='zh')
 # <Translate text=สวัสดีจีน lang_tgt=th lang_src=zh>  
 #  default parameter : lang_src=auto lang_tgt=auto 
 #  API can automatically identify the src translation language, so you don’t need to set lang_src
@@ -52,12 +62,14 @@ print(translate_text)
 -> 你好中国
 ```
 ### Multithreading Translate
+
 ```python
-from google_trans_new import google_translator 
+from google_trans_new.google_trans_new import google_translator
 from multiprocessing.dummy import Pool as ThreadPool
 import time
 
-pool = ThreadPool(8) # Threads
+pool = ThreadPool(8)  # Threads
+
 
 def request(text):
     lang = "zh"
@@ -65,37 +77,46 @@ def request(text):
     translate_text = t.translate(text.strip(), lang)
     return translate_text
 
-if __name__ == "__main__" :
-    time1 = time.time()
-    with open("./test.txt",'r') as f_p:
-      texts = f_p.readlines()
-      try:
-          results = pool.map(request, texts)
-      except Exception as e:
-          raise e
-      pool.close()
-      pool.join()
 
-      time2 = time.time()
-      print("Translating %s sentences, a total of %s s"%(len(texts),time2 - time1))
--> Translating 720 sentences, a total of 25.89591908454895 s 
+if __name__ == "__main__":
+    time1 = time.time()
+    with open("./test.txt", 'r') as f_p:
+        texts = f_p.readlines()
+        try:
+            results = pool.map(request, texts)
+        except Exception as e:
+            raise e
+        pool.close()
+        pool.join()
+
+        time2 = time.time()
+        print("Translating %s sentences, a total of %s s" % (len(texts), time2 - time1))
+-> Translating
+720
+sentences, a
+total
+of
+25.89591908454895
+s 
 ```
 ### Detect
+
 ```python
-from google_trans_new import google_translator  
-  
-detector = google_translator()  
+from google_trans_new.google_trans_new import google_translator
+
+detector = google_translator()
 detect_result = detector.detect('สวัสดีจีน')
 # <Detect text=สวัสดีจีน >  
 print(detect_result)
 -> ['th', 'thai']
 ```
 ### Pronounce
+
 ```python
-from google_trans_new import google_translator  
-  
-translator  = google_translator()  
-Pronounce = translator.translate('สวัสดีจีน',lang_src='th',lang_tgt='zh',pronounce=True)  
+from google_trans_new.google_trans_new import google_translator
+
+translator = google_translator()
+Pronounce = translator.translate('สวัสดีจีน', lang_src='th', lang_tgt='zh', pronounce=True)
 print(Pronounce)
 -> ['你好中国 ', 'S̄wạs̄dī cīn', 'Nǐ hǎo zhōngguó']
 ```
